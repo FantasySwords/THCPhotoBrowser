@@ -23,15 +23,15 @@
 #pragma mark - 配置UI
 - (void) configImageViewCellUI
 {
-    self.iamgeView = [[UIImageView alloc] initWithFrame:self.bounds];
-    self.iamgeView.contentMode = UIViewContentModeScaleAspectFill;
-    self.iamgeView.clipsToBounds = YES;
-    [self addSubview:self.iamgeView];
+    self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.imageView.clipsToBounds = YES;
+    [self addSubview:self.imageView];
 }
 
 - (void)layoutSubviews
 {
-    self.iamgeView.frame = self.bounds;
+    self.imageView.frame = self.bounds;
 }
 
 @end

@@ -27,7 +27,6 @@
 		BA266BEB1B6A189900FC9B91 /* pic8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA266BE71B6A189900FC9B91 /* pic8.jpg */; };
 		BA266BEC1B6A189900FC9B91 /* pic9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA266BE81B6A189900FC9B91 /* pic9.jpg */; };
 		BABA7EC31B7879BD002D30A0 /* pic10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BABA7EC21B7879BD002D30A0 /* pic10.jpg */; };
-		BAF5CE121B68AC8600A1556C /* THCPhotoBrowserItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF5CE111B68AC8600A1556C /* THCPhotoBrowserItemCell.m */; };
 		BAF5CE151B68C9B800A1556C /* THCZoomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF5CE141B68C9B800A1556C /* THCZoomScrollView.m */; };
 /* End PBXBuildFile section */
 
@@ -71,8 +70,6 @@
 		BA266BE71B6A189900FC9B91 /* pic8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic8.jpg; sourceTree = "<group>"; };
 		BA266BE81B6A189900FC9B91 /* pic9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic9.jpg; sourceTree = "<group>"; };
 		BABA7EC21B7879BD002D30A0 /* pic10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic10.jpg; sourceTree = "<group>"; };
-		BAF5CE101B68AC8600A1556C /* THCPhotoBrowserItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THCPhotoBrowserItemCell.h; sourceTree = "<group>"; };
-		BAF5CE111B68AC8600A1556C /* THCPhotoBrowserItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THCPhotoBrowserItemCell.m; sourceTree = "<group>"; };
 		BAF5CE131B68C9B800A1556C /* THCZoomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THCZoomScrollView.h; sourceTree = "<group>"; };
 		BAF5CE141B68C9B800A1556C /* THCZoomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THCZoomScrollView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -178,7 +175,6 @@
 		BA04F4BC1B677F7700EF9639 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				BAF5CE0F1B68AC4E00A1556C /* Cell */,
 				BAF5CE0E1B68AC4200A1556C /* View */,
 				BA04F4C31B6784E600EF9639 /* Model */,
 				BA04F4BD1B6780EC00EF9639 /* THCPhotoBrowser.h */,
@@ -203,15 +199,6 @@
 				BAF5CE141B68C9B800A1556C /* THCZoomScrollView.m */,
 			);
 			name = View;
-			sourceTree = "<group>";
-		};
-		BAF5CE0F1B68AC4E00A1556C /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				BAF5CE101B68AC8600A1556C /* THCPhotoBrowserItemCell.h */,
-				BAF5CE111B68AC8600A1556C /* THCPhotoBrowserItemCell.m */,
-			);
-			name = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -327,7 +314,6 @@
 				BA04F4C61B6789C200EF9639 /* ImageViewCell.m in Sources */,
 				BA04F4911B6776DB00EF9639 /* ViewController.m in Sources */,
 				BA04F4BF1B6780EC00EF9639 /* THCPhotoBrowser.m in Sources */,
-				BAF5CE121B68AC8600A1556C /* THCPhotoBrowserItemCell.m in Sources */,
 				BAF5CE151B68C9B800A1556C /* THCZoomScrollView.m in Sources */,
 				BA04F48E1B6776DB00EF9639 /* AppDelegate.m in Sources */,
 				BA04F48B1B6776DB00EF9639 /* main.m in Sources */,
@@ -450,6 +436,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = THCPhotoBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -460,6 +447,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = THCPhotoBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

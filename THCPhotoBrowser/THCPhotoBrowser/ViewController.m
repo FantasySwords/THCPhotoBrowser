@@ -35,7 +35,7 @@
     self.collectionView = [[UICollectionView alloc] initWithFrame:[UIScreen mainScreen].bounds collectionViewLayout:flowLayout];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-
+    self.collectionView.backgroundColor = [UIColor whiteColor];
     [self.collectionView registerClass:[ImageViewCell class] forCellWithReuseIdentifier:@"ImageViewCell"];
     [self.view addSubview:self.collectionView];
     
@@ -51,12 +51,16 @@
     
  }
 
+- (void)viewWillLayoutSubviews
+{
+    self.collectionView.frame = self.view.bounds;
+}
 
 #pragma mark - UICollectionViewDelegate、UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 6;
+    return self.dataSource.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -64,7 +68,7 @@
     static NSString * identifier = @"ImageViewCell";
     ImageViewCell * cell =  [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
-    cell.iamgeView.image = [UIImage imageNamed:[NSString stringWithFormat:@"pic%ld.jpg", indexPath.row]];
+    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"pic%ld.jpg", indexPath.row]];
     
     return cell;
 }
@@ -73,8 +77,14 @@
 {
     THCPhotoBrowser * photoBrowser = [[THCPhotoBrowser alloc] init];
     photoBrowser.delegate = self;
-    [self presentViewController:photoBrowser animated:NO completion:nil];
+    [photoBrowser presentFromViewController:self index:indexPath.row];
 }
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(10, 10, 10,10);
+}
+
 
 #pragma mark - THCPhotoBrowserDelegate
 - (NSInteger)numberOfPhotosInPhotoBrowser:(THCPhotoBrowser *)photoBrowser
@@ -84,17 +94,12 @@
 
 -(THCPhotoModel*)photoBrowser:(THCPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
 {
-    return self.dataSource[index];
+    THCPhotoModel * photoModel = self.dataSource[index];
+     ImageViewCell * cell = (ImageViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    photoModel.sourceImageView = cell.imageView;
+    
+    return photoModel;
 }
-
-#pragma mark - UICollectionViewDelegateFlowLayout
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(10, 10, 10,10);
-}
-
-
-#pragma mark - 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

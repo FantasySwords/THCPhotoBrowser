@@ -24,8 +24,15 @@
 @interface THCPhotoBrowser : UIViewController
 
 //图像之间的宽度
-@property (nonatomic, assign) CGFloat lineSpaces;
 @property (nonatomic, assign) CGFloat interitemSpacing;
+
+@property (nonatomic, assign) CGFloat presnetAnimateDuration;
+
+@property (nonatomic, assign) CGFloat dismissAnimateDuration;
+
 @property (nonatomic, weak) id<THCPhotoBrowserDelegate> delegate;
+
+- (void)presentFromViewController:(UIViewController *)fromViewController index:(NSInteger)index;
+- (void)dismiss:(BOOL)animated;
 
 @end

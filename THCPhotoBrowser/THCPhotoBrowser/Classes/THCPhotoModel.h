@@ -14,8 +14,7 @@
 @property (nonatomic, strong) UIImage * photoImage;
 @property (nonatomic, strong) NSURL * photoURL;
 
+@property (nonatomic, weak) UIImageView * sourceImageView;
 @property (nonatomic, assign) NSInteger tag;
-
-
 
 @end

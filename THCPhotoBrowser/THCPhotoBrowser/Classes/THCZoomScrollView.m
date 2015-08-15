@@ -74,36 +74,21 @@
     [self.imageView setClipsToBounds:NO];
     [self addSubview:self.imageView];
     
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognizer:)];
-    tap.numberOfTapsRequired = 2;
-    [self.imageView addGestureRecognizer:tap];
-}
-
-- (void)tapGestureRecognizer:(UITapGestureRecognizer *)tap
-{
-    float newScale = 0.f;
-    if (_isZooming) { //执行缩小动作
-        newScale = 1.0f;
-        _isZooming = NO;
-    }else { //执行放大动作
-        newScale = 2.5;
-        _isZooming = YES;
-    }
+    //手势
+    UITapGestureRecognizer * imageViewSingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewSingleClicked:)];
+    imageViewSingleTap.numberOfTouchesRequired = 1;
+    imageViewSingleTap.numberOfTapsRequired = 1;
+    [self.imageView addGestureRecognizer:imageViewSingleTap];
     
-    CGRect zoomRect = [self zoomRectForScale:newScale withCenter:[tap locationInView:tap.view]];
-    [self zoomToRect:zoomRect animated:YES];
-}
-
-- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center
-{
-    CGRect zoomRect;
-    zoomRect.size.height = CGRectGetHeight(self.bounds) / scale;
-    zoomRect.size.width = CGRectGetWidth(self.bounds)  / scale;
+    UITapGestureRecognizer * imageViewDoubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewDoubleClicked:)];
+    imageViewDoubleTap.numberOfTapsRequired = 2;
+    imageViewDoubleTap.numberOfTouchesRequired = 1;
+    [self.imageView addGestureRecognizer:imageViewDoubleTap];
     
-    zoomRect.origin.x = center.x - (zoomRect.size.width  / 2.0);
-    zoomRect.origin.y = center.y - (zoomRect.size.height / 2.0);
+    [imageViewSingleTap requireGestureRecognizerToFail:imageViewDoubleTap];
     
-    return zoomRect;
+    UITapGestureRecognizer * scrollViewSingleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewSingleClicked:)];
+    [self addGestureRecognizer:scrollViewSingleTap];
 }
 
 #pragma mark - 布局
@@ -120,11 +105,11 @@
 {
     _isZooming = NO;
     self.zoomScale = 1.0f;
-    self.imageView.frame = [self frameFroImageView];
+    self.imageView.frame = [self frameForImageView];
 }
 
 #pragma mark - Frame
-- (CGRect) frameFroImageView
+- (CGRect) frameForImageView
 {
     if (!self.imageView.image) {
         return CGRectZero;
@@ -166,6 +151,18 @@
     return CGRectMake(scaleOriginX, scaleOriginY, scaleWidth, scaleHeight);
 }
 
+- (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center
+{
+    CGRect zoomRect;
+    zoomRect.size.height = CGRectGetHeight(self.bounds) / scale;
+    zoomRect.size.width = CGRectGetWidth(self.bounds)  / scale;
+    
+    zoomRect.origin.x = center.x - (zoomRect.size.width  / 2.0);
+    zoomRect.origin.y = center.y - (zoomRect.size.height / 2.0);
+    
+    return zoomRect;
+}
+
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
@@ -178,7 +175,6 @@
 {
     return self.imageView;
 }
-
 
 #pragma mark - Public
 - (void)prepareForReuse
@@ -199,8 +195,55 @@
         return;
     }
     
-    self.imageView.frame = [self frameFroImageView];
+    self.imageView.frame = [self frameForImageView];
 }
 
+- (CGRect)imageViewFrame
+{
+    return _imageView.frame;
+}
+
+#pragma mark - Tap Action
+
+- (void)imageViewSingleClicked:(UITapGestureRecognizer *)tap
+{
+    if ([self.actionDelgate respondsToSelector:@selector(zoomScrollView:singleTap:isInImageView:)]) {
+        [self.actionDelgate zoomScrollView:self singleTap:tap isInImageView:YES];
+    }
+}
+
+- (void)imageViewDoubleClicked:(UITapGestureRecognizer *)tap
+{
+    float newScale = 0.f;
+    if (_isZooming) { //执行缩小动作
+        newScale = 1.0f;
+        _isZooming = NO;
+    }else { //执行放大动作
+        newScale = 2.5;
+        _isZooming = YES;
+    }
+    
+    CGRect zoomRect = [self zoomRectForScale:newScale withCenter:[tap locationInView:tap.view]];
+    [self zoomToRect:zoomRect animated:YES];
+    
+    if ([self.actionDelgate respondsToSelector:@selector(zoomscrollview:doubleTapInImageView:)]) {
+        [self.actionDelgate zoomscrollview:self doubleTapInImageView:tap];
+    }
+}
+
+- (void)scrollViewSingleClicked:(UITapGestureRecognizer *)tap
+{
+    CGPoint pt =  [tap locationInView:self.imageView];
+    
+    if (!(pt.x >= CGRectGetMinX(_imageView.bounds)
+          && pt.x <= CGRectGetMaxX(_imageView.bounds)
+          && pt.y >= CGRectGetMinY(_imageView.bounds)
+          && pt.y <= CGRectGetMaxY(_imageView.bounds))) {
+        
+        if ([self.actionDelgate respondsToSelector:@selector(zoomScrollView:singleTap:isInImageView:)]) {
+            [self.actionDelgate zoomScrollView:self singleTap:tap isInImageView:NO];
+        }
+    }
+}
 
 @end
