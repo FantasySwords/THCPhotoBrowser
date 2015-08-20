@@ -10,7 +10,7 @@
 #import "ImageViewCell.h"
 #import "THCPhotoBrowser.h"
 #import "THCPhotoModel.h"
-
+#import "UIImageView+WebCache.h"
 
 @interface ViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,THCPhotoBrowserDelegate>
 
@@ -40,12 +40,36 @@
     [self.view addSubview:self.collectionView];
     
     
+    
+    NSArray * thumbnailArray =  @[@"http://ww4.sinaimg.cn/thumbnail/71bf96f0gw1ev8x5du0qgj20ml0fc787.jpg",
+                                  @"http://ww4.sinaimg.cn/thumbnail/71bf96f0gw1ev8x5e4slqj20ml0ean1p.jpg",
+                                  @"http://ww3.sinaimg.cn/thumbnail/71bf96f0gw1ev8x5eeewkj20ml0fc796.jpg",
+                                  @"http://ww4.sinaimg.cn/thumbnail/71bf96f0gw1ev8x5erx6xj20ml0onqaz.jpg",
+                                  @"http://ww4.sinaimg.cn/thumbnail/71bf96f0gw1ev8x5isminj20hr0qoq5j.jpg",
+                                  @"http://ww1.sinaimg.cn/thumbnail/71bf96f0gw1ev8x6m1bi6j20ml0gg434.jpg",
+                                  @"http://ww3.sinaimg.cn/thumbnail/71bf96f0gw1ev8x5f91pvj20ml0figs3.jpg",
+                                  @"http://ww4.sinaimg.cn/thumbnail/71bf96f0gw1ev8x5fi3zrj20ml0fdq6x.jpg",
+                                  @"http://ww3.sinaimg.cn/thumbnail/71bf96f0gw1ev8x5fykdjj20ml15149o.jpg"];
+    
+    NSArray * largeArray = @[@"http://ww4.sinaimg.cn/large/71bf96f0gw1ev8x5du0qgj20ml0fc787.jpg",
+                             @"http://ww4.sinaimg.cn/large/71bf96f0gw1ev8x5e4slqj20ml0ean1p.jpg",
+                             @"http://ww3.sinaimg.cn/large/71bf96f0gw1ev8x5eeewkj20ml0fc796.jpg",
+                             @"http://ww4.sinaimg.cn/large/71bf96f0gw1ev8x5erx6xj20ml0onqaz.jpg",
+                             @"http://ww4.sinaimg.cn/large/71bf96f0gw1ev8x5isminj20hr0qoq5j.jpg",
+                             @"http://ww1.sinaimg.cn/large/71bf96f0gw1ev8x6m1bi6j20ml0gg434.jpg",
+                             @"http://ww3.sinaimg.cn/large/71bf96f0gw1ev8x5f91pvj20ml0figs3.jpg",
+                             @"http://ww4.sinaimg.cn/large/71bf96f0gw1ev8x5fi3zrj20ml0fdq6x.jpg",
+                             @"http://ww3.sinaimg.cn/large/71bf96f0gw1ev8x5fykdjj20ml15149o.jpg"];
+    
     self.dataSource = [NSMutableArray array];
     
-    for (NSInteger i = 0; i < 11; i++) {
+    for (NSInteger i = 0; i < thumbnailArray.count; i++) {
         THCPhotoModel * photoModel = [[THCPhotoModel alloc] init];
-        photoModel.photoImage = [UIImage imageNamed:[NSString stringWithFormat:@"pic%ld.jpg", i]];
+        //photoModel.photoImage = [UIImage imageNamed:[NSString stringWithFormat:@"pic%ld.jpg", i]];
         photoModel.tag = i;
+    
+        photoModel.thumbnailPhotoURL = [NSURL URLWithString:thumbnailArray[i]];
+        photoModel.originalphotoURL = [NSURL URLWithString:largeArray[i]];
         [self.dataSource addObject:photoModel];
     }
     
@@ -68,7 +92,9 @@
     static NSString * identifier = @"ImageViewCell";
     ImageViewCell * cell =  [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     
-    cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"pic%ld.jpg", indexPath.row]];
+    THCPhotoModel * photoModel = self.dataSource[indexPath.row];
+    
+    [cell.imageView sd_setImageWithURL:photoModel.thumbnailPhotoURL];
     
     return cell;
 }

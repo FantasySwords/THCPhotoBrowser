@@ -8,7 +8,7 @@
 
 #import "THCPhotoBrowser.h"
 #import "THCZoomScrollView.h"
-
+#import "UIImageView+WebCache.h"
 
 @interface THCPhotoBrowser ()<UIScrollViewDelegate, THCZoomScrollViewDelegate>
 {
@@ -31,6 +31,9 @@
 @property (nonatomic, assign) BOOL isRotating;
 //保存现场
 @property (nonatomic ,assign) BOOL preStatusBarHidden;
+
+@property (nonatomic, strong) UILabel * pagingLabel;
+@property (nonatomic, strong) UIButton * saveButton;
 
 @end
 
@@ -107,6 +110,17 @@
     _pagingScrollView.hidden = YES;
     
     //[self runPresentAnimate];
+    _pagingLabel = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, 100.f, 20.f)];
+    _pagingLabel.center = CGPointMake(self.view.frame.size.width / 2, 40.f);
+    _pagingLabel.font = [UIFont systemFontOfSize:18 weight:0.5];
+    _pagingLabel.textAlignment = NSTextAlignmentCenter;
+    _pagingLabel.textColor = [UIColor whiteColor];
+    [self.view addSubview:_pagingLabel];
+    
+    if ([self numberOfPhotos] > 1) {
+        _pagingLabel.text = [NSString stringWithFormat:@"%ld/%ld", _currentItemIndex + 1, [self numberOfPhotos]];
+    }
+    
 }
 
 #pragma mark -
@@ -174,7 +188,7 @@
             zoomScrollView.frame = [self frameForZoomScrollViewAtIndex:i];
             zoomScrollView.actionDelgate = self;
             THCPhotoModel * photoModel = [self photoAtIndex:i];
-            zoomScrollView.image = photoModel.photoImage;
+            zoomScrollView.photoModel = photoModel;
             
             [self.pagingScrollView addSubview:zoomScrollView];
         }
@@ -248,7 +262,6 @@
 - (void)reloadData
 {
     [self tilePages];
-
 }
 
 #pragma mark - 配置布局
@@ -296,6 +309,10 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     _currentItemIndex =  scrollView.contentOffset.x / scrollView.bounds.size.width;
+    
+    if ([self numberOfPhotos] > 1) {
+        _pagingLabel.text = [NSString stringWithFormat:@"%ld/%ld", _currentItemIndex + 1, [self numberOfPhotos]];
+    }
 }
 
 #pragma mark - THCZoomScrollViewDelegate
@@ -303,6 +320,7 @@
 {
     [self dismiss:YES];
 }
+
 - (void)zoomscrollview:(THCZoomScrollView *)zoomScrollView doubleTapInImageView:(UITapGestureRecognizer *)tap
 {
     
@@ -353,11 +371,16 @@
     
     UIViewController *presentingViewController = viewController.view.window.rootViewController;
     while (presentingViewController.presentedViewController) presentingViewController = presentingViewController.presentedViewController;
-    UIView *snapshot = [presentingViewController.view snapshotViewAfterScreenUpdates:NO];
+    UIView *snapshot = [presentingViewController.view snapshotViewAfterScreenUpdates:YES];
     snapshot.clipsToBounds = NO;
     return snapshot;
 }
 
+- (void)prepareForDismiss
+{
+    self.pagingLabel.hidden = YES;
+    self.pagingScrollView.hidden = YES;
+}
 
 #pragma mark - Public
 - (void)presentFromViewController:(UIViewController *)fromViewController index:(NSInteger)index
@@ -376,7 +399,7 @@
         
         UIImageView * transitionImageView = [[UIImageView alloc] initWithFrame:sourceFrame];
         transitionImageView.contentMode = UIViewContentModeScaleAspectFill;
-        transitionImageView.image = photoModel.photoImage;
+        [transitionImageView sd_setImageWithURL:photoModel.thumbnailPhotoURL];
         [self.view addSubview:transitionImageView];
         self.pagingScrollView.hidden = YES;
         
@@ -389,6 +412,7 @@
             if (finished) {
                 [transitionImageView removeFromSuperview];
                 self.pagingScrollView.hidden = NO;
+                
             }
         }];
     }];
@@ -399,18 +423,18 @@
     if (!animated) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }else {
-        
-        self.pagingScrollView.hidden = YES;
+
+        [self prepareForDismiss];
         [self.view addSubview:_presentingSnapshotView];
         [self.view sendSubviewToBack:_presentingSnapshotView];
         
         THCPhotoModel * photoModel = [self photoAtIndex:_currentItemIndex];
         CGRect sourceFrame = [photoModel.sourceImageView convertRect:photoModel.sourceImageView.frame toView:_fromViewController.view ];
-        UIImage * image = photoModel.photoImage;
+        UIImage * image = photoModel.sourceImageView.image;
         
         UIImageView * transitionImageView = [[UIImageView alloc]initWithFrame:[self frameForImage:image]];
         transitionImageView.contentMode = UIViewContentModeScaleAspectFill;
-        transitionImageView.image = photoModel.photoImage;
+        transitionImageView.image = image;
         transitionImageView.clipsToBounds = YES;
         [self.view addSubview:transitionImageView];
         
@@ -419,7 +443,7 @@
         } completion:^(BOOL finished) {
             
             [self dismissViewControllerAnimated:NO completion:^{
-                
+               
             }];
         }];
         

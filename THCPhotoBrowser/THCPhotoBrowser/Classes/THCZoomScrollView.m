@@ -7,12 +7,17 @@
 //
 
 #import "THCZoomScrollView.h"
+#import "UIImageView+WebCache.h"
+#import "DACircularProgressView.h"
 
 @interface THCZoomScrollView ()<UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIImageView * imageView;
 @property (nonatomic, assign) BOOL isZooming;
 @property (nonatomic, assign) UIInterfaceOrientation lastInterfaceOrientaion;
+@property (nonatomic, strong) DACircularProgressView * progressView;
+
+
 
 @end
 
@@ -24,7 +29,6 @@
 {
     if (self = [super init]) {
         [self initVariable];
-        [self configZoomScrollViewUI];
     }
     return self;
 }
@@ -43,7 +47,6 @@
 {
     if (self = [super initWithCoder:aDecoder]) {
         [self initVariable];
-        [self configZoomScrollViewUI];
     }
     return self;
 }
@@ -89,6 +92,16 @@
     
     UITapGestureRecognizer * scrollViewSingleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewSingleClicked:)];
     [self addGestureRecognizer:scrollViewSingleTap];
+    
+    //DACircularProgressView
+    _progressView = [[DACircularProgressView alloc] initWithFrame:CGRectMake(0, 0, 36, 36)];
+    _progressView.center = CGPointMake(CGRectGetWidth(self.bounds) / 2.f, CGRectGetHeight(self.bounds) / 2.f);
+    _progressView.roundedCorners = YES;
+    _progressView.trackTintColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+ 
+    [_progressView setProgress:0.4 animated:YES];
+    [self addSubview:_progressView];
+    _progressView.hidden = YES;
 }
 
 #pragma mark - 布局
@@ -97,6 +110,8 @@
     if ([[UIApplication sharedApplication] statusBarOrientation] != _lastInterfaceOrientaion) {
         [self zoomScrollViewWillRotate];
     }
+    
+    _progressView.center = CGPointMake(CGRectGetWidth(self.bounds) / 2.f, CGRectGetHeight(self.bounds) / 2.f);
     
     _lastInterfaceOrientaion = [[UIApplication sharedApplication] statusBarOrientation];
 }
@@ -180,10 +195,12 @@
 - (void)prepareForReuse
 {
     _index = 0;
-    _image = nil;
+    _photoModel = nil;
     _imageView.image = nil;
     _isZooming = NO;
     self.zoomScale = 1.0f;
+    self.progressView.hidden = YES;
+    [self.progressView setProgress:0.f];
     
     self.contentOffset = CGPointZero;
 }
@@ -201,6 +218,18 @@
 - (CGRect)imageViewFrame
 {
     return _imageView.frame;
+}
+
+- (void)setPhotoModel:(THCPhotoModel *)photoModel
+{
+    [self.imageView sd_setImageWithURL:photoModel.originalphotoURL placeholderImage:photoModel.sourceImageView.image options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        self.progressView.hidden = NO;
+        [self.progressView setProgress:((float)receivedSize) / expectedSize animated:YES];
+        
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        self.progressView.hidden = YES;
+        [self setImage:image];
+    }];
 }
 
 #pragma mark - Tap Action

@@ -11,10 +11,16 @@
 
 @interface THCPhotoModel : NSObject
 
-@property (nonatomic, strong) UIImage * photoImage;
-@property (nonatomic, strong) NSURL * photoURL;
+@property (nonatomic, strong) UIImage * thumbnailPhoto;
+@property (nonatomic, strong) NSURL * thumbnailPhotoURL;
+
+@property (nonatomic, strong) UIImage * originalPhoto;
+@property (nonatomic, strong) NSURL * originalphotoURL;
 
 @property (nonatomic, weak) UIImageView * sourceImageView;
 @property (nonatomic, assign) NSInteger tag;
+
+- (id)getThumbnail;
+- (id)getPhoto;
 
 @end
