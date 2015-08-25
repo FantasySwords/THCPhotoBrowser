@@ -26,6 +26,10 @@
 		BA266BEA1B6A189900FC9B91 /* pic7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA266BE61B6A189900FC9B91 /* pic7.jpg */; };
 		BA266BEB1B6A189900FC9B91 /* pic8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA266BE71B6A189900FC9B91 /* pic8.jpg */; };
 		BA266BEC1B6A189900FC9B91 /* pic9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BA266BE81B6A189900FC9B91 /* pic9.jpg */; };
+		BA3F65721B8B174700A23394 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BA3F656E1B8B174700A23394 /* LICENSE */; };
+		BA3F65731B8B174700A23394 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BA3F65701B8B174700A23394 /* MBProgressHUD.m */; };
+		BA3F65741B8B174700A23394 /* README.mdown in Sources */ = {isa = PBXBuildFile; fileRef = BA3F65711B8B174700A23394 /* README.mdown */; };
+		BA3F657E1B8B1A5C00A23394 /* THCPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BA3F657D1B8B1A5C00A23394 /* THCPhotoBrowser.bundle */; };
 		BABA7EC31B7879BD002D30A0 /* pic10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BABA7EC21B7879BD002D30A0 /* pic10.jpg */; };
 		BAD565341B818F1A00097760 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD565331B818F1A00097760 /* DACircularProgressView.m */; };
 		BAD565591B81949C00097760 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BAD565391B81949C00097760 /* MKAnnotationView+WebCache.m */; };
@@ -86,6 +90,11 @@
 		BA266BE61B6A189900FC9B91 /* pic7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic7.jpg; sourceTree = "<group>"; };
 		BA266BE71B6A189900FC9B91 /* pic8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic8.jpg; sourceTree = "<group>"; };
 		BA266BE81B6A189900FC9B91 /* pic9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic9.jpg; sourceTree = "<group>"; };
+		BA3F656E1B8B174700A23394 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BA3F656F1B8B174700A23394 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		BA3F65701B8B174700A23394 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		BA3F65711B8B174700A23394 /* README.mdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.mdown; sourceTree = "<group>"; };
+		BA3F657D1B8B1A5C00A23394 /* THCPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = THCPhotoBrowser.bundle; sourceTree = "<group>"; };
 		BABA7EC21B7879BD002D30A0 /* pic10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pic10.jpg; sourceTree = "<group>"; };
 		BAD565321B818F1A00097760 /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
 		BAD565331B818F1A00097760 /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
@@ -227,7 +236,9 @@
 		BA04F4BC1B677F7700EF9639 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				BA3F657D1B8B1A5C00A23394 /* THCPhotoBrowser.bundle */,
 				BAD565351B81930300097760 /* ThirdLibrary */,
+				BA3F656D1B8B174700A23394 /* MBProgressHUD */,
 				BAF5CE0E1B68AC4200A1556C /* View */,
 				BA04F4C31B6784E600EF9639 /* Model */,
 				BA04F4BD1B6780EC00EF9639 /* THCPhotoBrowser.h */,
@@ -243,6 +254,17 @@
 				BA04F4C11B67831500EF9639 /* THCPhotoModel.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		BA3F656D1B8B174700A23394 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				BA3F656E1B8B174700A23394 /* LICENSE */,
+				BA3F656F1B8B174700A23394 /* MBProgressHUD.h */,
+				BA3F65701B8B174700A23394 /* MBProgressHUD.m */,
+				BA3F65711B8B174700A23394 /* README.mdown */,
+			);
+			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		BAD565351B81930300097760 /* ThirdLibrary */ = {
@@ -400,8 +422,10 @@
 				BA04F4B61B677E8E00EF9639 /* pic1.jpg in Resources */,
 				BABA7EC31B7879BD002D30A0 /* pic10.jpg in Resources */,
 				BA04F4991B6776DB00EF9639 /* LaunchScreen.xib in Resources */,
+				BA3F657E1B8B1A5C00A23394 /* THCPhotoBrowser.bundle in Resources */,
 				BA04F4B71B677E8E00EF9639 /* pic2.jpg in Resources */,
 				BA266BEA1B6A189900FC9B91 /* pic7.jpg in Resources */,
+				BA3F65721B8B174700A23394 /* LICENSE in Resources */,
 				BA266BEC1B6A189900FC9B91 /* pic9.jpg in Resources */,
 				BA04F4961B6776DB00EF9639 /* Images.xcassets in Resources */,
 				BA04F4BA1B677E8E00EF9639 /* pic5.jpg in Resources */,
@@ -435,10 +459,12 @@
 				BAD565621B81949C00097760 /* UIButton+WebCache.m in Sources */,
 				BAD565611B81949C00097760 /* SDWebImagePrefetcher.m in Sources */,
 				BAD5655F1B81949C00097760 /* SDWebImageDownloaderOperation.m in Sources */,
+				BA3F65741B8B174700A23394 /* README.mdown in Sources */,
 				BAF5CE151B68C9B800A1556C /* THCZoomScrollView.m in Sources */,
 				BA04F48E1B6776DB00EF9639 /* AppDelegate.m in Sources */,
 				BAD565641B81949C00097760 /* UIImage+MultiFormat.m in Sources */,
 				BAD565341B818F1A00097760 /* DACircularProgressView.m in Sources */,
+				BA3F65731B8B174700A23394 /* MBProgressHUD.m in Sources */,
 				BAD5655B1B81949C00097760 /* SDImageCache.m in Sources */,
 				BA04F48B1B6776DB00EF9639 /* main.m in Sources */,
 				BA04F4C21B67831500EF9639 /* THCPhotoModel.m in Sources */,

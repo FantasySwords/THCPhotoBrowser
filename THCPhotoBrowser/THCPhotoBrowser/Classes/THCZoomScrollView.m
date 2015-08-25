@@ -12,11 +12,10 @@
 
 @interface THCZoomScrollView ()<UIScrollViewDelegate>
 
-@property (nonatomic, strong) UIImageView * imageView;
+
 @property (nonatomic, assign) BOOL isZooming;
 @property (nonatomic, assign) UIInterfaceOrientation lastInterfaceOrientaion;
 @property (nonatomic, strong) DACircularProgressView * progressView;
-
 
 
 @end

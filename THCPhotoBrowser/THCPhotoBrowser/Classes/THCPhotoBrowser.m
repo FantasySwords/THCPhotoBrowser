@@ -9,6 +9,7 @@
 #import "THCPhotoBrowser.h"
 #import "THCZoomScrollView.h"
 #import "UIImageView+WebCache.h"
+#import "MBProgressHUD.h"
 
 @interface THCPhotoBrowser ()<UIScrollViewDelegate, THCZoomScrollViewDelegate>
 {
@@ -34,6 +35,8 @@
 
 @property (nonatomic, strong) UILabel * pagingLabel;
 @property (nonatomic, strong) UIButton * saveButton;
+
+
 
 @end
 
@@ -109,24 +112,82 @@
     [self showIndexItem:_currentItemIndex];
     _pagingScrollView.hidden = YES;
     
-    //[self runPresentAnimate];
     _pagingLabel = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, 100.f, 20.f)];
-    _pagingLabel.center = CGPointMake(self.view.frame.size.width / 2, 40.f);
+    _pagingLabel.center = CGPointMake(self.view.frame.size.width / 2, 30.f);
     _pagingLabel.font = [UIFont systemFontOfSize:18 weight:0.5];
     _pagingLabel.textAlignment = NSTextAlignmentCenter;
     _pagingLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:_pagingLabel];
     
+    _saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _saveButton.frame = CGRectMake(15, CGRectGetHeight([UIScreen mainScreen].bounds) - 40 , 45, 25);
+    _saveButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [_saveButton setTitle:@"保存" forState:UIControlStateNormal];
+    [_saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _saveButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    _saveButton.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    _saveButton.layer.cornerRadius = 3;
+    _saveButton.layer.masksToBounds = YES;
+    _saveButton.layer.borderWidth = 1;
+    _saveButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    [_saveButton addTarget:self action:@selector(saveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_saveButton];
+    
+   
     if ([self numberOfPhotos] > 1) {
         _pagingLabel.text = [NSString stringWithFormat:@"%ld/%ld", _currentItemIndex + 1, [self numberOfPhotos]];
     }
-    
 }
 
-#pragma mark -
-- (void)runPresentAnimate
+#pragma mark - saveButtonClicked Action
+- (void)saveButtonClicked
 {
-    [self showIndexItem:_currentItemIndex];
+    for (THCZoomScrollView * view in _visibleViewSet) {
+        view.frame = [self frameForZoomScrollViewAtIndex:view.index];
+        
+        if (view.index == _currentItemIndex) {
+         
+            if (view.imageView.image) {
+                self.saveButton.enabled = NO;
+                UIImageWriteToSavedPhotosAlbum(view.imageView.image, self, @selector(photoSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:), nil);
+            }
+            return;
+        }
+    }
+}
+
+- (void)photoSavedToPhotosAlbum:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    MBProgressHUD * hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.cornerRadius = 5.f;
+    hud.opacity = 0.75f;
+    hud.labelFont = [UIFont systemFontOfSize:15];
+    hud.margin = 10;
+    hud.mode = MBProgressHUDModeCustomView;
+    
+    UIView * hudCustomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 50)];
+    UIImageView * alertImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 48, 48)];
+    alertImageView.image = [UIImage imageNamed:@"thc_pb_error_icon"];
+    alertImageView.center = CGPointMake(CGRectGetMidX(hudCustomView.frame), CGRectGetMidY(hudCustomView.frame));
+    
+    [hudCustomView addSubview:alertImageView];
+    NSString * alertImageName = nil;
+    if (!error) {
+        alertImageName = @"thc_pb_success_icon.png";
+        hud.labelText = @"保存成功";
+    }else
+    {
+        alertImageName = @"thc_pb_error_icon.png";
+        hud.labelText = @"保存失败";
+    }
+    
+    NSString *imagePathInBundle = [NSString stringWithFormat:@"THCPhotoBrowser.bundle/%@",  alertImageName];
+    alertImageView.image = [UIImage imageNamed:imagePathInBundle];
+    hud.customView = hudCustomView;
+    [hud show:YES];
+    [hud hide:YES afterDelay:2];
+    
+    self.saveButton.enabled = YES;
 }
 
 #pragma mark - Frame设置
@@ -274,6 +335,9 @@
     for (THCZoomScrollView * view in _visibleViewSet) {
         view.frame = [self frameForZoomScrollViewAtIndex:view.index];
     }
+    
+    _pagingLabel.center = CGPointMake(self.view.frame.size.width / 2, 30.f);
+    _saveButton.frame = CGRectMake(15, CGRectGetHeight([UIScreen mainScreen].bounds) - 40 , 45, 25);
 }
 
 #pragma mark - 旋转

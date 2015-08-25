@@ -21,9 +21,12 @@
 
 @interface THCZoomScrollView : UIScrollView
 
+@property (nonatomic, strong) UIImageView * imageView;
+
 @property (nonatomic, assign) NSInteger index;
 
 @property (nonatomic, weak) id<THCZoomScrollViewDelegate> actionDelgate;
+
 @property (nonatomic, assign, readonly) CGRect imageViewFrame;
 
 @property (nonatomic, strong) THCPhotoModel * photoModel;
