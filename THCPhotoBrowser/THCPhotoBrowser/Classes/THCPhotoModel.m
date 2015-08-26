@@ -10,6 +10,12 @@
 
 @implementation THCPhotoModel
 
+- (void)setSourceImageView:(UIImageView *)sourceImageView
+{
+    _sourceImageView = sourceImageView;
+    self.soucreRect = [sourceImageView convertRect:sourceImageView.bounds toView:nil];
+}
+
 - (id)getThumbnail
 {
     if (self.sourceImageView.image) {

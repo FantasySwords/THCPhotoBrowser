@@ -32,6 +32,9 @@
 
 @property (nonatomic, weak) id<THCPhotoBrowserDelegate> delegate;
 
+
+@property (nonatomic, strong) NSArray * photosArray;
+
 - (void)presentFromViewController:(UIViewController *)fromViewController index:(NSInteger)index;
 - (void)dismiss:(BOOL)animated;
 

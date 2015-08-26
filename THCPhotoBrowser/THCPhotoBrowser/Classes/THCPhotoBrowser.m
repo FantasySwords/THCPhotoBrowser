@@ -89,8 +89,6 @@
     _presnetAnimateDuration = 0.35;
     _dismissAnimateDuration = 0.25;
     
-    _presnetAnimateDuration = 6;
-    _dismissAnimateDuration = 6;
     _visibleViewSet = [[NSMutableSet alloc] init];
     _reusableViewSet = [[NSMutableSet alloc] init];
     
@@ -305,6 +303,8 @@
     if (_photoCount == NSNotFound) {
         if ([self.delegate respondsToSelector:@selector(numberOfPhotosInPhotoBrowser:)]) {
             _photoCount = [_delegate numberOfPhotosInPhotoBrowser:self];
+        }else {
+            _photoCount = self.photosArray.count;
         }
     }
     if (_photoCount == NSNotFound) _photoCount = 0;
@@ -317,11 +317,14 @@
     if (index < [self numberOfPhotos]) {
         if ([_delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
             photoModel = [_delegate photoBrowser:self photoAtIndex:index];
+        }else {
+            photoModel = self.photosArray[index];
         }
     }
-
+    
     return photoModel;
 }
+
 
 - (void)reloadData
 {
@@ -447,6 +450,14 @@
 {
     self.pagingLabel.hidden = YES;
     self.pagingScrollView.hidden = YES;
+    self.saveButton.hidden = YES;
+}
+
+- (void)didPresent
+{
+    self.pagingLabel.hidden = NO;
+    self.pagingScrollView.hidden = NO;
+    self.saveButton.hidden = NO;
 }
 
 #pragma mark - Public

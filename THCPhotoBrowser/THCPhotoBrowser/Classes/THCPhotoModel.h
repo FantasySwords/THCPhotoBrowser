@@ -17,7 +17,8 @@
 @property (nonatomic, strong) UIImage * originalPhoto;
 @property (nonatomic, strong) NSURL * originalphotoURL;
 
-@property (nonatomic, weak) UIImageView * sourceImageView;
+@property (nonatomic, weak)   UIImageView * sourceImageView;
+@property (nonatomic, assign) CGRect soucreRect;
 @property (nonatomic, assign) NSInteger tag;
 
 - (id)getThumbnail;
