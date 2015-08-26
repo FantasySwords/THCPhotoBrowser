@@ -88,6 +88,9 @@
     _currentItemIndex = 0;
     _presnetAnimateDuration = 0.35;
     _dismissAnimateDuration = 0.25;
+    
+    _presnetAnimateDuration = 6;
+    _dismissAnimateDuration = 6;
     _visibleViewSet = [[NSMutableSet alloc] init];
     _reusableViewSet = [[NSMutableSet alloc] init];
     
@@ -459,7 +462,7 @@
         [self showIndexItem:index];
         
         THCPhotoModel * photoModel = [self photoAtIndex:index];
-        CGRect sourceFrame = [photoModel.sourceImageView convertRect:photoModel.sourceImageView.frame toView:fromViewController.view ];
+        CGRect sourceFrame = [photoModel.sourceImageView convertRect:photoModel.sourceImageView.bounds toView:fromViewController.view ];
         
         UIImageView * transitionImageView = [[UIImageView alloc] initWithFrame:sourceFrame];
         transitionImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -493,7 +496,7 @@
         [self.view sendSubviewToBack:_presentingSnapshotView];
         
         THCPhotoModel * photoModel = [self photoAtIndex:_currentItemIndex];
-        CGRect sourceFrame = [photoModel.sourceImageView convertRect:photoModel.sourceImageView.frame toView:_fromViewController.view ];
+        CGRect sourceFrame = [photoModel.sourceImageView convertRect:photoModel.sourceImageView.bounds toView:_fromViewController.view ];
         UIImage * image = photoModel.sourceImageView.image;
         
         UIImageView * transitionImageView = [[UIImageView alloc]initWithFrame:[self frameForImage:image]];
